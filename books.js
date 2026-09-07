@@ -1,5 +1,5 @@
 /* ==========================================================
-   DIA'S BOOKSHELF — my book list
+   DIYA'S BOOKSHELF — my book list
    ==========================================================
 
    This is the ONLY file you need to edit to add a new book.

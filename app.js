@@ -1,5 +1,5 @@
 /* ==========================================================
-   Dia's Bookshelf — the code that draws the page.
+   Diya's Bookshelf — the code that draws the page.
    You should not need to change anything in here.
    All the books live in books.js
    ========================================================== */

@@ -1,6 +1,6 @@
-# 📚 Dia's Bookshelf
+# 📚 Diya's Bookshelf
 
-A little website for Dia's book reviews and ratings.
+A little website for Diya's book reviews and ratings.
 
 ## How to open it
 
