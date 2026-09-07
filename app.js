@@ -192,37 +192,6 @@ function bookCardHTML(book) {
     document.querySelector('#genreChips .chip').setAttribute("aria-pressed", "true");
   }
 
-  /* ----- stats ----- */
-
-  function buildStats() {
-    const done = books.filter(function (b) { return normalizeShelf(b.shelf) === "finished"; });
-
-    const pages = done.reduce(function (sum, b) { return sum + (Number(b.pages) || 0); }, 0);
-
-    const rated = done.filter(function (b) { return Number(b.rating) > 0; });
-    const avg = rated.length
-      ? (rated.reduce(function (s, b) { return s + Number(b.rating); }, 0) / rated.length).toFixed(1)
-      : "0";
-
-    const tally = {};
-    done.forEach(function (b) { tally[b.genre] = (tally[b.genre] || 0) + 1; });
-    const top = Object.keys(tally).sort(function (a, b) { return tally[b] - tally[a]; })[0];
-
-    document.getElementById("statFinished").textContent = done.length;
-    document.getElementById("statAvg").textContent = avg;
-
-    // only show the pages counter once some page counts have been filled in
-    document.getElementById("statPages").textContent = pages.toLocaleString();
-    document.getElementById("statPagesCard").hidden = pages === 0;
-
-    const genreEl = document.getElementById("statGenre");
-    genreEl.textContent = top || "–";
-    if (top) genreEl.style.fontSize = top.length > 12 ? "1.25rem" : "1.6rem";
-
-    document.getElementById("footerCount").textContent =
-      books.length + " books on the shelf so far.";
-  }
-
   /* ----- filtering & sorting ----- */
 
   function matches(book) {
@@ -313,6 +282,7 @@ function bookCardHTML(book) {
   /* ----- go ----- */
 
   buildChips();
-  buildStats();
+  document.getElementById("footerCount").textContent =
+    books.length + " books on the shelf so far.";
   render();
 })();
