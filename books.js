@@ -19,14 +19,14 @@
                   (you can invent new ones too — a new colour is made for you)
      series       the series name, or "" if it is a standalone book
      rating       a number from 0 to 5. Halves are allowed, like 4.5
-     shelf        "finished"  = you read the whole thing
-                  "reading"   = you are reading it right now
-                  "want"      = you want to read it one day
+     shelf        "finished" = you read it, so you can rate and review it
+                  "wishlist" = a book you want to read one day
      date         the day you finished it, written as "YYYY-MM-DD"
      favorite     true if it is an all-time favourite, otherwise false
      pages        how many pages (use 0 if you don't know)
      tags         little describing words, as many as you like
      review       your paragraph about the book
+                  (for a wish list book, write why you want to read it)
 
    Careful with commas! Every line inside a block ends with a comma,
    and every block ends with a comma too.
@@ -108,14 +108,14 @@ const BOOKS = [
     author: "Shannon Messenger",
     genre: "Fantasy",
     series: "Keeper of the Lost Cities",
-    rating: 4,
-    shelf: "reading",
+    rating: 0,
+    shelf: "wishlist",
     date: "",
     favorite: false,
     pages: 512,
     tags: ["elves", "long book", "series"],
     review:
-      "I am about halfway through. Sophie finds out she is an elf and moves to a hidden world, and there are SO many characters to keep track of. It is a really thick book but it goes fast. I will write a proper review when I finish it.",
+      "My friend says Sophie finds out she is an elf and moves to a hidden world. It is a really thick book and there are loads in the series, so I want to start it in the holidays.",
   },
   {
     title: "A Wrinkle in Time",
@@ -123,7 +123,7 @@ const BOOKS = [
     genre: "Science Fiction",
     series: "Time Quintet",
     rating: 0,
-    shelf: "want",
+    shelf: "wishlist",
     date: "",
     favorite: false,
     pages: 256,

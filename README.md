@@ -31,7 +31,7 @@ the quote marks. Every line ends with a comma — that's the one thing to watch 
 | `genre` | Fantasy, Mystery, Adventure, Graphic Novel… or invent your own and it gets its own colour |
 | `series` | the series name, or `""` if it's a standalone |
 | `rating` | 0 to 5, halves allowed (`4.5`) |
-| `shelf` | `"finished"`, `"reading"` or `"want"` |
+| `shelf` | `"finished"` or `"wishlist"` — that's the lot |
 | `date` | when you finished it, like `"2026-08-21"` |
 | `favorite` | `true` puts a ❤️ on the card |
 | `pages` | counts towards your "pages read" total |
@@ -42,7 +42,8 @@ the quote marks. Every line ends with a comma — that's the one thing to watch 
 ## What the site does on its own
 
 - Counts your books, pages and average rating, and works out your favourite genre
-- Lets you filter by shelf, by genre, by favourites, by 4-stars-and-up, or by series
+- Two shelves only: books you've **finished**, and your **wish list**
+- Lets you filter by shelf, by genre, or by favourites
 - Searches everything, including the words inside your reviews
 - Sorts by newest, best rated, A–Z, or longest
 - Looks good on a phone as well as a laptop

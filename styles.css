@@ -27,6 +27,9 @@
 
 * { box-sizing: border-box; }
 
+/* flex and grid rules would otherwise override the hidden attribute */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -362,6 +365,11 @@ img.cover { box-shadow: none; }
   font-size: .97rem;
 }
 
+/* wish list books haven't been read yet, so they sit a bit quieter */
+.book-wish { background: #fcfaff; }
+.wish-note { color: var(--ink-soft); font-size: .93rem; }
+.wish-label { color: #6b52b5; font-weight: 700; }
+
 .book-meta {
   display: flex;
   flex-wrap: wrap;
@@ -389,9 +397,8 @@ img.cover { box-shadow: none; }
   text-transform: uppercase;
   letter-spacing: .04em;
 }
-.badge-reading  { background: #fff2d6; color: #a06b00; }
-.badge-want     { background: #eef0f5; color: #6f6785; }
 .badge-finished { background: #ddf5ef; color: var(--teal-dark); }
+.badge-wishlist { background: #f2ecff; color: #6b52b5; }
 
 .meta-sep { opacity: .5; }
 

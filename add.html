@@ -58,7 +58,7 @@
         <input id="f-series" type="text" placeholder="Leave empty if it isn&rsquo;t in a series">
       </div>
 
-      <div class="field">
+      <div class="field" id="row-rating">
         <label for="f-rating">My rating: <span id="ratingOut">4.5</span> out of 5</label>
         <input id="f-rating" type="range" min="0" max="5" step="0.5" value="4.5">
       </div>
@@ -67,17 +67,16 @@
         <label for="f-shelf">Which shelf?</label>
         <select id="f-shelf">
           <option value="finished">I finished it</option>
-          <option value="reading">I&rsquo;m reading it now</option>
-          <option value="want">I want to read it</option>
+          <option value="wishlist">I want to read it (wish list)</option>
         </select>
       </div>
 
-      <div class="field">
+      <div class="field" id="row-date">
         <label for="f-date">Date I finished it</label>
         <input id="f-date" type="date">
       </div>
 
-      <div class="field">
+      <div class="field" id="row-pages">
         <label for="f-pages">How many pages?</label>
         <input id="f-pages" type="number" min="0" step="1" placeholder="0">
       </div>
@@ -93,14 +92,14 @@
         <input id="f-cover" type="url" placeholder="Optional &mdash; leave empty for a colourful cover">
       </div>
 
-      <div class="field wide check">
+      <div class="field wide check" id="row-fave">
         <input id="f-fave" type="checkbox">
         <label for="f-fave">❤️ This is one of my all-time favourites</label>
       </div>
 
       <div class="field wide">
-        <label for="f-review">My review</label>
-        <textarea id="f-review" placeholder="What happened? Who was your favourite character? Would you tell a friend to read it?">Write what you thought about the book here. What was the best bit? Was there anything you didn&rsquo;t like? Who should read it?</textarea>
+        <label for="f-review" id="reviewLabel">My review</label>
+        <textarea id="f-review"></textarea>
       </div>
 
     </div>
@@ -147,15 +146,17 @@
   const val = id => document.getElementById(id).value.trim();
 
   function collect() {
+    const wish = val("f-shelf") === "wishlist";
     return {
       title:    val("f-title")  || "Untitled",
       author:   val("f-author") || "Unknown",
       genre:    val("f-genre")  || "Other",
       series:   val("f-series"),
-      rating:   Number(document.getElementById("f-rating").value),
+      // a book she hasn't read yet can't have a rating or a finish date
+      rating:   wish ? 0 : Number(document.getElementById("f-rating").value),
       shelf:    val("f-shelf"),
-      date:     val("f-date"),
-      favorite: document.getElementById("f-fave").checked,
+      date:     wish ? "" : val("f-date"),
+      favorite: wish ? false : document.getElementById("f-fave").checked,
       pages:    Number(val("f-pages")) || 0,
       tags:     val("f-tags").split(",").map(t => t.trim()).filter(Boolean),
       cover:    val("f-cover"),
@@ -187,6 +188,19 @@
 
   function update() {
     const book = collect();
+    const wish = book.shelf === "wishlist";
+
+    // hide the questions that only make sense once she's actually read it
+    ["row-rating", "row-date", "row-fave"].forEach(id => {
+      document.getElementById(id).hidden = wish;
+    });
+    const reviewBox = document.getElementById("f-review");
+    document.getElementById("reviewLabel").textContent =
+      wish ? "Why I want to read it" : "My review";
+    reviewBox.placeholder = wish
+      ? "Who told you about it? What sounds good about it? When are you going to read it?"
+      : "What happened? Who was your favourite character? Would you tell a friend to read it?";
+
     preview.innerHTML = bookCardHTML(book);
     codeOut.textContent = toCode(book);
     document.getElementById("ratingOut").textContent =

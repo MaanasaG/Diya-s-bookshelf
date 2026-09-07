@@ -38,11 +38,15 @@ function genreColor(genre) {
   return "hsl(" + (Math.abs(hash) % 360) + " 52% 58%)";
 }
 
+// There are only two shelves: books Diya has finished, and books she wants to read.
 const SHELF_LABELS = {
   finished: "Finished",
-  reading:  "Reading now",
-  want:     "Want to read",
+  wishlist: "Wish list",
 };
+
+function normalizeShelf(shelf) {
+  return shelf === "wishlist" || shelf === "want" ? "wishlist" : "finished";
+}
 
 // Five stars, filled up to the rating (halves work too).
 function starsHTML(rating) {
@@ -87,7 +91,8 @@ function coverHTML(book, color) {
 
 function bookCardHTML(book) {
   const color = genreColor(book.genre);
-  const shelf = SHELF_LABELS[book.shelf] ? book.shelf : "finished";
+  const shelf = normalizeShelf(book.shelf);
+  const wish = shelf === "wishlist";
 
   const tags = (book.tags || [])
     .map(function (t) {
@@ -95,24 +100,27 @@ function bookCardHTML(book) {
     })
     .join("");
 
-  const bits = [];
-  bits.push('<span class="badge badge-' + shelf + '">' + esc(SHELF_LABELS[shelf]) + "</span>");
-  if (book.date)  bits.push("<span>Finished " + esc(prettyDate(book.date)) + "</span>");
-  if (book.pages) bits.push("<span>" + esc(book.pages) + " pages</span>");
+  // A wish list book hasn't been read yet, so it gets no stars and no finish date.
+  const bits = ['<span class="badge badge-' + shelf + '">' + esc(SHELF_LABELS[shelf]) + "</span>"];
+  if (!wish && book.date)  bits.push("<span>Finished " + esc(prettyDate(book.date)) + "</span>");
+  if (!wish && book.pages) bits.push("<span>" + esc(book.pages) + " pages</span>");
 
   return (
-    '<article class="book" style="--spine:' + color + '">' +
-      (book.favorite ? '<span class="fave" role="img" aria-label="One of my favourites">❤️</span>' : "") +
+    '<article class="book' + (wish ? " book-wish" : "") + '" style="--spine:' + color + '">' +
+      (book.favorite && !wish ? '<span class="fave" role="img" aria-label="One of my favourites">❤️</span>' : "") +
       '<div class="book-top">' +
         coverHTML(book, color) +
         "<div>" +
           '<h3 class="book-title">' + esc(book.title) + "</h3>" +
           '<p class="book-author">by ' + esc(book.author) + "</p>" +
           (book.series ? '<span class="series">' + esc(book.series) + " series</span>" : "") +
-          "<div>" + starsHTML(book.rating) + "</div>" +
+          (wish ? "" : "<div>" + starsHTML(book.rating) + "</div>") +
         "</div>" +
       "</div>" +
-      (book.review ? '<p class="review">' + esc(book.review) + "</p>" : "") +
+      (book.review
+        ? (wish ? '<p class="review wish-note"><span class="wish-label">Why I want to read it:</span> ' : '<p class="review">') +
+          esc(book.review) + "</p>"
+        : "") +
       '<div class="book-meta">' +
         bits.join('<span class="meta-sep">•</span>') +
         (tags ? '<span class="meta-sep">•</span>' + tags : "") +
@@ -151,17 +159,13 @@ function bookCardHTML(book) {
   }
 
   function buildChips() {
-    // Shelf
-    const shelfCounts = { finished: 0, reading: 0, want: 0 };
-    books.forEach(function (b) {
-      if (shelfCounts[b.shelf] != null) shelfCounts[b.shelf]++;
-      else shelfCounts.finished++;
-    });
+    // Shelf — just two: read it, or want to read it
+    const shelfCounts = { finished: 0, wishlist: 0 };
+    books.forEach(function (b) { shelfCounts[normalizeShelf(b.shelf)]++; });
     document.getElementById("shelfChips").innerHTML =
       chip("All", "all", "shelf", null, books.length) +
       chip("Finished", "finished", "shelf", null, shelfCounts.finished) +
-      chip("Reading now", "reading", "shelf", null, shelfCounts.reading) +
-      chip("Want to read", "want", "shelf", null, shelfCounts.want);
+      chip("Wish list", "wishlist", "shelf", null, shelfCounts.wishlist);
 
     // Genre
     const genres = {};
@@ -178,9 +182,7 @@ function bookCardHTML(book) {
 
     // Extras
     document.getElementById("extraChips").innerHTML =
-      chip("❤️ Favourites", "favorite", "extra") +
-      chip("⭐ 4 stars and up", "top", "extra") +
-      chip("📚 Part of a series", "series", "extra");
+      chip("❤️ Favourites", "favorite", "extra");
 
     // "All" starts switched on
     document.querySelector('#shelfChips .chip').setAttribute("aria-pressed", "true");
@@ -190,7 +192,7 @@ function bookCardHTML(book) {
   /* ----- stats ----- */
 
   function buildStats() {
-    const done = books.filter(function (b) { return b.shelf === "finished"; });
+    const done = books.filter(function (b) { return normalizeShelf(b.shelf) === "finished"; });
 
     const pages = done.reduce(function (sum, b) { return sum + (Number(b.pages) || 0); }, 0);
 
@@ -218,12 +220,9 @@ function bookCardHTML(book) {
   /* ----- filtering & sorting ----- */
 
   function matches(book) {
-    if (state.shelf !== "all" && (book.shelf || "finished") !== state.shelf) return false;
+    if (state.shelf !== "all" && normalizeShelf(book.shelf) !== state.shelf) return false;
     if (state.genre !== "all" && book.genre !== state.genre) return false;
-
     if (state.extra.has("favorite") && !book.favorite) return false;
-    if (state.extra.has("top") && Number(book.rating) < 4) return false;
-    if (state.extra.has("series") && !book.series) return false;
 
     if (state.q) {
       const haystack = [book.title, book.author, book.genre, book.series, book.review]
