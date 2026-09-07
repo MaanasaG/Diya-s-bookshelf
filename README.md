@@ -7,21 +7,18 @@ A little website for Diya's book reviews and ratings.
 Double-click **`index.html`**. That's it — it opens in your browser and works
 even without the internet.
 
-## How to add a book you've just finished
+## How to add a book
 
-**The easy way**
+Everything lives in **`books.js`**, and that's the only file you ever need to touch.
 
-1. Open the website and click the orange **+ Add a book** button.
-2. Fill in the form. You'll see your review appear as you type.
-3. Click **Copy the code**.
-4. Open `books.js`, find the line `const BOOKS = [`, and paste right underneath it.
+1. Open `books.js`.
+2. Copy one of the blocks that's already there — everything from `{` down to `},`.
+3. Paste it at the top of the list, just under the line `const BOOKS = [`.
+4. Change the words inside the quote marks to your book.
 5. Save, then refresh the website.
 
-**The hands-on way**
-
-Open `books.js` and copy one of the blocks that's already there (everything from
-`{` down to `},`), paste it at the top of the list, and change the words inside
-the quote marks. Every line ends with a comma — that's the one thing to watch out for.
+Every line inside a block ends with a comma, and the block itself ends with a
+comma too. That's the one thing to watch out for.
 
 ## What you can fill in for each book
 
@@ -54,7 +51,6 @@ the quote marks. Every line ends with a comma — that's the one thing to watch 
 | --- | --- |
 | `books.js` | **your books — this is the only file you need to edit** |
 | `index.html` | the bookshelf page |
-| `add.html` | the add-a-book helper |
 | `styles.css` | the colours and design (all the colours are at the very top) |
 | `app.js` | the code that draws the page |
 
