@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dia's Bookshelf</title>
+<meta name="description" content="Book reviews and ratings by Dia, age 10.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#shelf">Skip to the books</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">📚</span>
+      <div>
+        <h1>Dia&rsquo;s Bookshelf</h1>
+        <p class="tagline">Books I&rsquo;ve read, and what I really thought about them.</p>
+      </div>
+    </div>
+    <a class="btn btn-primary" href="add.html">+ Add a book</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== Stats ===== -->
+  <section class="stats" aria-label="My reading numbers">
+    <div class="stat">
+      <span class="stat-num" id="statFinished">0</span>
+      <span class="stat-label">books finished</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" id="statPages">0</span>
+      <span class="stat-label">pages read</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" id="statAvg">0</span>
+      <span class="stat-label">average rating</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" id="statGenre">&ndash;</span>
+      <span class="stat-label">favourite genre</span>
+    </div>
+  </section>
+
+  <!-- ===== Controls ===== -->
+  <section class="controls" aria-label="Find a book">
+
+    <div class="search-row">
+      <label class="search">
+        <span class="visually-hidden">Search books</span>
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input type="search" id="search" placeholder="Search a title, author or word&hellip;" autocomplete="off">
+      </label>
+
+      <label class="sort">
+        <span class="visually-hidden">Sort books</span>
+        <select id="sort">
+          <option value="recent">Newest first</option>
+          <option value="rating">Best rated first</option>
+          <option value="title">A to Z by title</option>
+          <option value="author">A to Z by author</option>
+          <option value="pages">Longest first</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="filter-block">
+      <h2 class="filter-title">Shelf</h2>
+      <div class="chips" id="shelfChips" role="group" aria-label="Filter by shelf"></div>
+    </div>
+
+    <div class="filter-block">
+      <h2 class="filter-title">Genre</h2>
+      <div class="chips" id="genreChips" role="group" aria-label="Filter by genre"></div>
+    </div>
+
+    <div class="filter-block">
+      <h2 class="filter-title">More</h2>
+      <div class="chips" id="extraChips" role="group" aria-label="Extra filters"></div>
+    </div>
+  </section>
+
+  <!-- ===== Results ===== -->
+  <p class="result-count" id="resultCount" role="status"></p>
+
+  <section id="shelf" class="shelf" aria-label="Book reviews"></section>
+
+  <p class="empty" id="empty" hidden>
+    <span aria-hidden="true">🐛</span>
+    No books match that. Try clearing the filters!
+  </p>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Made by Dia &middot; bookworm since forever &middot; birthday 24 December 🎄</p>
+    <p class="footer-small" id="footerCount"></p>
+  </div>
+</footer>
+
+<script src="books.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
