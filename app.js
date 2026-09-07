@@ -54,7 +54,7 @@ function starsHTML(rating) {
   if (r === 0) {
     return '<span class="stars"><span class="stars-num">not rated yet</span></span>';
   }
-  const pct = (r / 5) * 100;
+  const pct = Math.round((r / 5) * 1000) / 10;
   return (
     '<span class="stars" role="img" aria-label="' + r + ' out of 5 stars">' +
       '<span class="stars-track" aria-hidden="true">' +
@@ -113,7 +113,10 @@ function bookCardHTML(book) {
         "<div>" +
           '<h3 class="book-title">' + esc(book.title) + "</h3>" +
           '<p class="book-author">by ' + esc(book.author) + "</p>" +
-          (book.series ? '<span class="series">' + esc(book.series) + " series</span>" : "") +
+          (book.series
+            ? '<span class="series">' + esc(book.series) +
+              (book.number ? " #" + esc(book.number) : " series") + "</span>"
+            : "") +
           (wish ? "" : "<div>" + starsHTML(book.rating) + "</div>") +
         "</div>" +
       "</div>" +
@@ -206,8 +209,11 @@ function bookCardHTML(book) {
     const top = Object.keys(tally).sort(function (a, b) { return tally[b] - tally[a]; })[0];
 
     document.getElementById("statFinished").textContent = done.length;
-    document.getElementById("statPages").textContent = pages.toLocaleString();
     document.getElementById("statAvg").textContent = avg;
+
+    // only show the pages counter once some page counts have been filled in
+    document.getElementById("statPages").textContent = pages.toLocaleString();
+    document.getElementById("statPagesCard").hidden = pages === 0;
 
     const genreEl = document.getElementById("statGenre");
     genreEl.textContent = top || "–";
