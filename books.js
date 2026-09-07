@@ -27,6 +27,8 @@
      favorite     true if it is an all-time favourite, otherwise false
      pages        how many pages (use 0 if you don't know)
      tags         little describing words, as many as you like
+     cover        a link to a picture of the cover, or "" for a plain
+                  coloured cover with the book's initials on it
      review       your paragraph about the book
                   (for a wish list book, write why you want to read it)
 
@@ -47,6 +49,7 @@ const BOOKS = [
     favorite: true,
     pages: 0,
     tags: ["friendship", "middle school", "baking"],
+    cover: "https://covers.openlibrary.org/b/id/7762197-M.jpg",
     review:
       "This is the first book in the series Cupcake Diaries. I loved this book so much! This book is about a girl named Katie. After Katie's friend moved on to the popular girls group, Katie was left with no friends on the first day of middle school!! Finally she makes 3 friends and together they make the Cupcake Club. Watch all the 4 girls grow with all their adventures in the Cupcake Club series!",
   },
@@ -62,6 +65,7 @@ const BOOKS = [
     favorite: false,
     pages: 0,
     tags: ["sports", "trying new things"],
+    cover: "",
     review:
       "Have you ever had no activities to do? Well Katie feels the same way! When all of Katie's friends have so many activities to do, Katie has none. Katie tries out some sports. She finally found a sport she's good at…",
   },
@@ -77,6 +81,7 @@ const BOOKS = [
     favorite: false,
     pages: 0,
     tags: ["Spanish", "family", "school"],
+    cover: "https://covers.openlibrary.org/b/id/7824674-M.jpg",
     review:
       "Even though Mia speaks Spanish at home, she's failing Spanish class! She speaks and understands it but reading and writing is way different. Otherwise things are good with Mia's stepdad, Eddie. But when it's time for parent-teacher conferences, who goes? Her mom of course, but Eddie or Dad? Do all 3 of them go?",
   },
@@ -92,6 +97,7 @@ const BOOKS = [
     favorite: false,
     pages: 0,
     tags: ["brothers", "summer camp", "family"],
+    cover: "https://covers.openlibrary.org/b/id/15087129-M.jpg",
     review:
       "Because Emma has 3 brothers she always has to change her plans, babysit her little brother, Jake, and… it's not fun! Emma's parents announced that Emma and Jake are going to the same camp! Emma is so frustrated. Can her summer plans get worse than this?",
   },
@@ -107,6 +113,7 @@ const BOOKS = [
     favorite: false,
     pages: 0,
     tags: ["being the leader", "teamwork", "baking"],
+    cover: "https://covers.openlibrary.org/b/id/8475792-M.jpg",
     review:
       "Alexis loves being in charge of the Cupcake Club. But is being in charge boring? More importantly, is SHE boring? When Alexis takes a break from her duties as the \"leader\", things get out of hand. Can Alexis fix this?",
   },

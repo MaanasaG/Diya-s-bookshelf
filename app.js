@@ -74,17 +74,27 @@ function prettyDate(iso) {
   return d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
 
-function coverHTML(book, color) {
-  if (book.cover) {
-    return '<img class="cover" src="' + esc(book.cover) + '" alt="Cover of ' + esc(book.title) + '" loading="lazy">';
-  }
-  const initials = String(book.title || "?")
+// The first letters of the title, used when there's no cover picture.
+function initialsFor(book) {
+  return String(book.title || "?")
     .split(/\s+/)
     .filter(function (w) { return /[a-z0-9]/i.test(w); })
     .slice(0, 2)
     .map(function (w) { return w[0].toUpperCase(); })
     .join("");
-  return '<div class="cover" style="--spine:' + color + '" aria-hidden="true">' + esc(initials) + "</div>";
+}
+
+function plainCoverHTML(book, color) {
+  return '<div class="cover" style="--spine:' + color + '" aria-hidden="true">' +
+    esc(initialsFor(book)) + "</div>";
+}
+
+function coverHTML(book, color) {
+  if (!book.cover) return plainCoverHTML(book, color);
+  // the data- bits let us swap in the plain cover if the picture won't load
+  return '<img class="cover" src="' + esc(book.cover) +
+    '" alt="Cover of ' + esc(book.title) + '" loading="lazy"' +
+    ' data-initials="' + esc(initialsFor(book)) + '" data-spine="' + color + '">';
 }
 
 /* ---------- one book card ---------- */
@@ -227,6 +237,19 @@ function bookCardHTML(book) {
 
     shelfEl.innerHTML = list.map(bookCardHTML).join("");
     emptyEl.hidden = list.length > 0;
+
+    // if a cover picture fails to load (no internet, or the link died),
+    // quietly put the coloured letters cover back instead of a broken image
+    shelfEl.querySelectorAll("img.cover").forEach(function (img) {
+      img.addEventListener("error", function () {
+        const plain = document.createElement("div");
+        plain.className = "cover";
+        plain.setAttribute("aria-hidden", "true");
+        plain.style.setProperty("--spine", img.dataset.spine || "");
+        plain.textContent = img.dataset.initials || "";
+        img.replaceWith(plain);
+      });
+    });
 
     countEl.textContent =
       list.length === books.length
